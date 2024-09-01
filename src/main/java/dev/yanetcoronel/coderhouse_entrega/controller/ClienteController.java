@@ -2,24 +2,37 @@ package dev.yanetcoronel.coderhouse_entrega.controller;
 
 import dev.yanetcoronel.coderhouse_entrega.model.Cliente;
 import dev.yanetcoronel.coderhouse_entrega.service.ClienteService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
+import java.util.List;
 
 @RestController
 @RequestMapping("/clientes")
 public class ClienteController {
-    @Autowired
+
     private ClienteService clienteService;
 
-    @PostMapping("/agregar")
-    public Cliente agregarCliente(@RequestBody Cliente cliente) {
-        return clienteService.agregarCliente(cliente);
+    public ClienteController(ClienteService clienteService) {
+        this.clienteService = clienteService;
     }
-    
-    @GetMapping("/buscar/{id}")
-    public Optional<Cliente> buscarCliente(@PathVariable Long id){
+
+    @PostMapping
+    public Cliente create(@RequestBody Cliente cliente) {
+        return clienteService.crearCliente(cliente);
+    }
+
+    @GetMapping
+    public List<Cliente> getClientes() {
+        return clienteService.getAllClientes();
+    }
+
+    @GetMapping("/{id}")
+    public Cliente getCliente(@PathVariable Long id) {
         return clienteService.buscarCliente(id);
+    }
+
+    @DeleteMapping("/{id}")
+    public void borrarCliente(@PathVariable Long id) {
+        clienteService.borrarCliente(id);
     }
 }
