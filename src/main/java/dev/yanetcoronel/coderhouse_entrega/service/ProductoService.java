@@ -1,25 +1,34 @@
 package dev.yanetcoronel.coderhouse_entrega.service;
 
 import dev.yanetcoronel.coderhouse_entrega.model.Producto;
-import dev.yanetcoronel.coderhouse_entrega.repository.ProductoRepository;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import dev.yanetcoronel.coderhouse_entrega.repository.ProductoRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
-import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
+import java.util.List;
 
 @Service
 public class ProductoService {
-    @Autowired
-    private ProductoRepository productoRepository;
 
-    public Producto agregarProducto(Producto producto) {
+    private final ProductoRepository productoRepository;
+
+    public ProductoService(ProductoRepository productoRepository) {
+        this.productoRepository = productoRepository;
+    }
+
+    public Producto crearProducto(Producto producto) {
         return productoRepository.save(producto);
     }
 
-    public Optional<Producto> buscarProducto(Long id) {
-        return productoRepository.findById(id);
+    public List<Producto> getAllProductos() {
+        return productoRepository.findAll();
+    }
+
+    public Producto buscarProducto(Long id) {
+        return productoRepository.findById(id).orElseGet(() -> null);
+    }
+
+    public void borrarProducto(Long id) {
+        productoRepository.deleteById(id);
     }
 }

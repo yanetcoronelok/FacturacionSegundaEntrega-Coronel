@@ -1,27 +1,37 @@
 package dev.yanetcoronel.coderhouse_entrega.controller;
 
-import dev.yanetcoronel.coderhouse_entrega.model.Cliente;
 import dev.yanetcoronel.coderhouse_entrega.model.Producto;
-import dev.yanetcoronel.coderhouse_entrega.service.ClienteService;
 import dev.yanetcoronel.coderhouse_entrega.service.ProductoService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
+import java.util.List;
 
 @RestController
 @RequestMapping("/productos")
 public class ProductoController {
-    @Autowired
-    private ProductoService productoService;
+    private final ProductoService productoService;
 
-    @PostMapping("/agregar")
-    public Producto agregarProducto(@RequestBody Producto producto) {
-        return productoService.agregarProducto(producto);
+    public ProductoController(ProductoService productoService) {
+        this.productoService = productoService;
     }
 
-    @GetMapping("/buscar/{id}")
-    public Optional<Producto> buscarProducto(@PathVariable Long id){
+    @PostMapping
+    public Producto create(@RequestBody Producto producto) {
+        return productoService.crearProducto(producto);
+    }
+
+    @GetMapping
+    public List<Producto> getAllProductos() {
+        return productoService.getAllProductos();
+    }
+
+    @GetMapping("/{id}")
+    public Producto getProducto(@PathVariable Long id) {
         return productoService.buscarProducto(id);
+    }
+
+    @DeleteMapping("/{id}")
+    public void borrarCliente(@PathVariable Long id) {
+        productoService.borrarProducto(id);
     }
 }
